@@ -33,16 +33,15 @@ namespace DuplexWCF.Service
 
         public System.IO.Stream JsTest()
         {
-            using (FileStream fs = File.Open(@"index.html", FileMode.Open))
-            {
-                string page = "Hello again!";
-                byte[] result = Encoding.UTF8.GetBytes(page);
-                WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
-                WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Credentials", "true");
-                //WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "https://db.twirp.me");
-                WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "http://avestascorecard.com");
-                return new MemoryStream(result);
-            }
+
+            string page = "Hello again!";
+            byte[] result = Encoding.UTF8.GetBytes(page);
+            WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
+            WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Credentials", "true");
+            //WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "https://db.twirp.me");
+            WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "http://avestascorecard.com");
+            return new MemoryStream(result);
+
         }
     }
 }
