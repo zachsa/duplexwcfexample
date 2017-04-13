@@ -38,7 +38,6 @@ namespace DuplexWCF.Service
             byte[] result = Encoding.UTF8.GetBytes(page);
             WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
             WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Credentials", "true");
-            //WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "https://db.twirp.me");
             WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "http://avestascorecard.com");
             return new MemoryStream(result);
 
