@@ -1,5 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.ServiceModel;
+using System.ServiceModel.Description;
+using System.ServiceModel.Web;
+using System.Text;
 
 namespace DuplexWCF.Host
 {
@@ -16,6 +20,11 @@ namespace DuplexWCF.Host
             ServiceHost duplexHost = new ServiceHost(typeof(Service.DuplexService));
             duplexHost.Open();
             Console.WriteLine("Duplex service started");
+
+            WebServiceHost webHost = new WebServiceHost(typeof(Service.WebService));
+            ServiceEndpoint ep = webHost.AddServiceEndpoint(typeof(Service.IWebService), new WebHttpBinding(), "");
+            webHost.Open();
+            Console.WriteLine("Web host started");
 
             // Keep service alive
             Console.ReadLine();

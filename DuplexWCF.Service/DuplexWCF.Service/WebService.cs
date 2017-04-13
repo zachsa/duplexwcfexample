@@ -1,19 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.ServiceModel;
+using System.Linq;
+using System.ServiceModel.Web;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DuplexWCF.Service
 {
-    public class Service : IService
+    public class WebService : IWebService
     {
-        public void HelloWorld(string name)
-        {
-            Console.WriteLine("Hello " + name);
-        }
-
-        
-        public string getHTMLpage()
+        public System.IO.Stream Home()
         {
             Console.WriteLine("Page requested");
 
@@ -27,8 +24,15 @@ namespace DuplexWCF.Service
                 {
                     page += temp.GetString(b);
                 }
-                return page;
+                byte[] result = Encoding.UTF8.GetBytes(page);
+                WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
+                return new MemoryStream(result);
             }
+        }
+
+        public string JsTest()
+        {
+            return "I came to the page later";
         }
     }
 }
