@@ -17,6 +17,6 @@ namespace DuplexWCF.Service
 
         [OperationContract]
         [WebGet]
-        string JsTest();
+        System.IO.Stream JsTest();
     }
 }

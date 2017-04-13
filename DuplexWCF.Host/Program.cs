@@ -22,7 +22,6 @@ namespace DuplexWCF.Host
             Console.WriteLine("Duplex service started");
 
             WebServiceHost webHost = new WebServiceHost(typeof(Service.WebService));
-            ServiceEndpoint ep = webHost.AddServiceEndpoint(typeof(Service.IWebService), new WebHttpBinding(), "");
             webHost.Open();
             Console.WriteLine("Web host started");
 

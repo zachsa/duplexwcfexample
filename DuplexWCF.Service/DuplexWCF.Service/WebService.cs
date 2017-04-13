@@ -26,13 +26,23 @@ namespace DuplexWCF.Service
                 }
                 byte[] result = Encoding.UTF8.GetBytes(page);
                 WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
+                //WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "127.0.0.1");
                 return new MemoryStream(result);
             }
         }
 
-        public string JsTest()
+        public System.IO.Stream JsTest()
         {
-            return "I came to the page later";
+            using (FileStream fs = File.Open(@"index.html", FileMode.Open))
+            {
+                string page = "Hello again!";
+                byte[] result = Encoding.UTF8.GetBytes(page);
+                WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
+                WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Credentials", "true");
+                //WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "https://db.twirp.me");
+                WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "http://avestascorecard.com");
+                return new MemoryStream(result);
+            }
         }
     }
 }
