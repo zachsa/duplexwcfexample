@@ -10,17 +10,17 @@ namespace Client
         {
             Console.WriteLine("Client Started");
 
-            // Test DuplexChannelFactory
-            NetTcpBinding duplexBinding = new NetTcpBinding
-            {
-                Name = "netTcpBinding"
-            };
-            EndpointAddress duplexAddress = new EndpointAddress("net.tcp://localhost:3124/DuplexService");
-            DuplexService serviceWithCallbackContract = new DuplexService();
-            InstanceContext instanceContext = new InstanceContext(serviceWithCallbackContract);
-            DuplexChannelFactory<IDuplexService> factory = new DuplexChannelFactory<IDuplexService>(instanceContext, duplexBinding, duplexAddress);
+            // Test DuplexChannelFactory using netTcpBinding
+            DuplexChannelFactory<IDuplexService> factory = new DuplexChannelFactory<IDuplexService>(
+                new InstanceContext(new DuplexService()),
+                new NetTcpBinding { Name = "netTcpBinding" },
+                new EndpointAddress("net.tcp://localhost:3124/DuplexService")
+            );
             IDuplexService duplexChannel = factory.CreateChannel();
             duplexChannel.HelloWorld("Duplex is running!");
+
+            // Test DuplexChannelFactory using netHttpBinding
+
 
             // Stop Client from exiting
             Console.ReadLine();
