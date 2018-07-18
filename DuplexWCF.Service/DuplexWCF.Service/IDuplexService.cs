@@ -2,13 +2,10 @@
 
 namespace DuplexWCF.Service
 {
-    [ServiceContract(CallbackContract = typeof(IDuplexService))]
+    [ServiceContract(CallbackContract = typeof(ICallback))]
     public interface IDuplexService
     {
-        [OperationContract(IsOneWay = true)]
+        [OperationContract(IsOneWay = true, Action = "*")]
         void HelloWorld(string name);
-
-        [OperationContract(IsOneWay = true)]
-        void Callback(string msg);
     }
 }

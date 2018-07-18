@@ -11,13 +11,9 @@ namespace DuplexWCF.Service
             Console.WriteLine("Hello " + name + ", now I will call the callback");
 
             // Call the callback
-            IDuplexService callback = OperationContext.Current.GetCallbackChannel<IDuplexService>();
-            callback.Callback("I am the callback!");
-        }
-
-        public void Callback(string msg)
-        {
-            Console.WriteLine(msg);
+            ICallback callback = OperationContext.Current.GetCallbackChannel<ICallback>();
+            callback.SendMessageToClient("I am the callback!");
+            
         }
     }
 }
