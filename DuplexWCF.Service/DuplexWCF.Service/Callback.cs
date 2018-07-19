@@ -14,9 +14,9 @@ namespace DuplexWCF.Service
         //    Console.WriteLine(msg);
         //}
 
-        public void SendMessageToClient2(Message msg)
+        public void SendMessageToClient(Message msg)
         {
-            Console.WriteLine("hi");
+            Console.WriteLine("This is the callback");
         }
     }
 }

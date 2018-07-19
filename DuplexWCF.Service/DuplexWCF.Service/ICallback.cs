@@ -15,6 +15,6 @@ namespace DuplexWCF.Service
         //void SendMessageToClient(string msg);
 
         [OperationContract(IsOneWay = true, Action = "*")]
-        void SendMessageToClient2(Message msg);
+        void SendMessageToClient(Message msg);
     }
 }

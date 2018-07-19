@@ -9,7 +9,7 @@ namespace DuplexWCF.Service
         //[OperationContract(IsOneWay = true)]
         //void HelloWorld(string name);
 
-        [OperationContract(IsOneWay = true)]
-        void HelloWorld2(Message name);
+        [OperationContract(IsOneWay = true, Action = "*")]
+        void HelloWorld(Message msg);
     }
 }

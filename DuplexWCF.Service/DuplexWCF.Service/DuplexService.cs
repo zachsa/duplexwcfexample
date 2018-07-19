@@ -17,13 +17,13 @@ namespace DuplexWCF.Service
             
         //}
 
-        public void HelloWorld2(Message name)
+        public void HelloWorld(Message name)
         {
             Console.WriteLine("Hello this is from a web client");
 
             // Call the callback
             ICallback callback = OperationContext.Current.GetCallbackChannel<ICallback>();
-            callback.SendMessageToClient2(null);
+            //callback.SendMessageToClient(null);
 
         }
     }
