@@ -9,12 +9,13 @@ namespace DuplexWCF.Service
 {
     public class Callback : ICallback
     {
-        //public void SendMessageToClient(string msg)
-        //{
-        //    Console.WriteLine(msg);
-        //}
+        public void BroadcastToNetClient(Message msg)
+        {
+            string txt = Encoding.UTF8.GetString(msg.GetBody<byte[]>());
+            Console.WriteLine(txt);
+        }
 
-        public void SendMessageToClient(Message msg)
+        public void BroadcastToBrowserClient(Message msg)
         {
             Console.WriteLine("This is the callback");
         }

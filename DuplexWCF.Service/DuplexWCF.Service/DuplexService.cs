@@ -1,30 +1,45 @@
 ﻿using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Text;
+using System.Net.WebSockets;
 
 namespace DuplexWCF.Service
 {
-    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single)]
     public class DuplexService : IDuplexService
     {
-        //public void HelloWorld(string name)
-        //{
-        //    Console.WriteLine("Hello " + name + ", now I will call the callback");
 
-        //    // Call the callback
-        //    ICallback callback = OperationContext.Current.GetCallbackChannel<ICallback>();
-        //    callback.SendMessageToClient("I am the callback!");
-            
-        //}
-
-        public void HelloWorld(Message name)
+        private Message CreateByteArrayMessage(string txt)
         {
-            Console.WriteLine("Hello this is from a web client");
+            Message msg = ByteStreamMessage.CreateMessage(new ArraySegment<byte>(Encoding.UTF8.GetBytes(txt)));
+            msg.Properties["WebSocketMessageProperty"] = new WebSocketMessageProperty { MessageType = WebSocketMessageType.Text };
+            return msg;
+        }
 
-            // Call the callback
+        private Message CreateSoapMessage(string txt)
+        {
+            Message msg = Message.CreateMessage(MessageVersion.Soap12WSAddressing10, "BroadcastToNetClient", Encoding.UTF8.GetBytes(txt));
+            msg.Properties["WebSocketMessageProperty"] = new WebSocketMessageProperty { MessageType = WebSocketMessageType.Text };
+            return msg;
+        }
+
+        public void HelloWorld(Message msg)
+        {
+            // Get context
             ICallback callback = OperationContext.Current.GetCallbackChannel<ICallback>();
-            //callback.SendMessageToClient(null);
+            if (msg.IsEmpty || ((IChannel)callback).State != CommunicationState.Opened) return;
+            string txt = Encoding.UTF8.GetString(msg.GetBody<byte[]>());
 
+            // Callback client
+            try
+            {
+                callback.BroadcastToNetClient(CreateSoapMessage($"Hello {txt}"));
+            }
+            catch
+            {
+                callback.BroadcastToBrowserClient(CreateByteArrayMessage($"Hello {txt}"));
+            }            
         }
     }
 }

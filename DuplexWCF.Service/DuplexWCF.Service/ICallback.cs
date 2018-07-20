@@ -11,10 +11,10 @@ namespace DuplexWCF.Service
     [ServiceContract]
     public interface ICallback
     {
-        //[OperationContract(IsOneWay = true)]
-        //void SendMessageToClient(string msg);
+        [OperationContract(IsOneWay = true, Action = "BroadcastToNetClient")]
+        void BroadcastToNetClient(Message msg);
 
         [OperationContract(IsOneWay = true, Action = "*")]
-        void SendMessageToClient(Message msg);
+        void BroadcastToBrowserClient(Message msg);
     }
 }

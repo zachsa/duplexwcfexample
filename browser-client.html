@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>WebSocket Chat</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        var ws;
+        $().ready(function () {
+            $("#btnConnect").click(function () {
+                $("#spanStatus").text("connecting");
+                ws = new WebSocket("ws://127.0.0.1:3122/DuplexService");
+                ws.onopen = function (res) {
+                    console.log("onopen", JSON.stringify(res, null, 2));
+                    $("#spanStatus").text("connected");
+                };
+                ws.onmessage = function (evt) {
+                    $("#spanStatus").text(evt.data);
+                };
+                ws.onerror = function (evt) {
+                    $("#spanStatus").text(evt.message);
+                };
+                ws.onclose = function (res) {
+                    console.log("onclose", JSON.stringify(res, null, 2));
+                    $("#spanStatus").text("disconnected");
+                };
+            });
+            $("#btnSend").click(function () {
+                if (ws.readyState == WebSocket.OPEN) {
+                    ws.send($("#textInput").val());
+                }
+                else {
+                    $("#spanStatus").text("Connection is closed");
+                }
+            });
+            $("#btnDisconnect").click(function () {
+                ws.close();
+            });
+        });
+    </script>
+</head>
+<body>
+    <input type="button" value="Connect" id="btnConnect" />
+    <input type="button" value="Disconnect" id="btnDisconnect" /><br />
+    <input type="text" id="textInput" />
+    <input type="button" value="Send" id="btnSend" /><br />
+    <span id="spanStatus">(display)</span>
+</body>
+</html>
